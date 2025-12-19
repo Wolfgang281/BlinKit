@@ -23,7 +23,14 @@ export const errorMiddleware = (err, req, res, next) => {
     message = "Invalid Session, Please login again";
   }
 
-  res.status(statusCode).json({ success: false, message, errObj: err });
+  res
+    .status(statusCode)
+    .json({
+      success: false,
+      message,
+      errObj: err,
+      errLine: process.env.NODE_ENV === "development" ? err.stack : undefined,
+    });
 };
 
 //! use this error middleware in the last

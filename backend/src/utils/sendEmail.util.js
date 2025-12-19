@@ -1,17 +1,18 @@
-import resend from "../config/resend.config";
-import CustomError from "./CustomError.util.js";
+import expressAsyncHandler from "express-async-handler";
+import mailTransport from "../config/nodemailer.config.js";
 
-const sendEmail = expressAsyncHandler(async ({ subject, to, html }) => {
-  const { data, error } = await resend.emails.send({
-    from: "Contact Form <onboarding@resend.dev>",
-    to,
-    subject,
-    html,
-  });
-  if (error) {
-    throw new CustomError(error.message, 502);
+export const sendEmail = expressAsyncHandler(
+  async ({ to, subject, text, html }) => {
+    const sentMail = await mailTransport.sendMail({
+      from: process.env.NODEMAILER_EMAIL,
+      to,
+      subject,
+      text,
+      html,
+    });
+
+    return sentMail;
   }
-  return data;
-});
+);
 
 export default sendEmail;

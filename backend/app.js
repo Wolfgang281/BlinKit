@@ -8,6 +8,8 @@ import morgan from "morgan";
 
 import { errorMiddleware } from "./src/middlewares/error.middleware.js";
 
+import userRoutes from "./src/routes/user/user.route.js";
+
 const app = express();
 
 app.use(
@@ -24,6 +26,8 @@ app.use(
     crossOriginResourcePolicy: false,
   })
 );
+
+app.use("/api/v1/user", userRoutes);
 
 app.use(errorMiddleware);
 
